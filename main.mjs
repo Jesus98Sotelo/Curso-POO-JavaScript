@@ -28,6 +28,33 @@ const Juan = new Student3('Juan Antonio', 15, ['Curso de Introducción a la Prod
 
 // Prototipos con la sintaxis de clases
 
+function videoPlay(id) {
+  const urlSecret = 'https://platziultrasecretomasquelanasa.com/' + id;
+
+  console.log('Se está reproduciendo desde la url ' + urlSecret);
+}
+
+function videoPause(id) {
+  const urlSecret = 'https://platziultrasecretomasquelanasa.com/' + id;
+
+  console.log('Se pauso desde la url ' + urlSecret);
+}
+export class PlatziClass {
+  constructor({
+    name,
+    videoID,
+  }) {
+    this.name = name;
+    this.videoID = videoID;
+  }
+
+  play() {
+    videoPlay(this.videoID)
+  }
+  pause() {
+    videoPause(this.videoID)
+  }
+}
 class Student2 {
   constructor({name, age, approvedCourses = [],}) {
     this.name = name;
@@ -46,6 +73,38 @@ const miguel = new Student2({
 })
 
 // Ventajas de la programación orientada a objetos
+class Cours {
+  constructor({
+    name,
+    lessons = [],
+  }) {
+    this._name = name;
+    this.lessons = lessons;
+  }
+
+  get name(){
+    return this._name;
+  }
+
+  set name(newname) {
+    if (newname === 'Curso Malito de Programación Básico') {
+      console.error('Web... no');
+    } else {
+      this._name = newname;
+    }
+  }
+}
+
+const basicProgrammingCourse = new Cours({
+  name: 'Curso Gratis de Programación Básica'
+})
+const definitiveCourseHTMLandCSS = new Cours({
+  name: 'Curso Definitivo HTML y CSS'
+})
+const HTMLandCSSPracticalCourse = new Cours({
+  name: 'Curso Practico HTML y CSS'
+})
+
 class LearningPath {
   constructor({
     name,
@@ -59,17 +118,17 @@ class LearningPath {
 const escuelaWeb = new LearningPath({
   name: 'Escuela de Desarrollo Web',
   courses: [
-    'Curso Prog Básica',
-    'CursoDefinitivoHTML',
-    'CursoPracticoHTML',
+    basicProgrammingCourse,
+    definitiveCourseHTMLandCSS,
+    HTMLandCSSPracticalCourse,
   ],
 });
 
 const escuelaData = new LearningPath({
   name: 'Escuela de Data Science',
   courses: [
-    'Curso Prog Básica',
-    'Curso DataBusiness',
+    basicProgrammingCourse,
+    'Curso Data Business',
     'Curso Dataviz',
   ],
 });
@@ -77,7 +136,7 @@ const escuelaData = new LearningPath({
 const escuelaVgs = new LearningPath({
   name: 'Escuela de Video Juegos',
   courses: [
-    'Curso Prog Básica',
+    basicProgrammingCourse,
     'Curso de Unity',
     'Curso de Unreal',
   ],
