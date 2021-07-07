@@ -25,6 +25,26 @@ Student3.prototype.newCourse = function (newCourse) {
 
 const Juan = new Student3('Juan Antonio', 15, ['Curso de Introducción a la Producción de Videojuegos', 'Curso de Creación de Personajes'])
 
+//Prototipos Inclusivos
+class Comment {
+  constructor({
+    content,
+    studentName,
+    studentRole = 'estudiante',
+  }){
+    this.content = content;
+    this.studentName = studentName;
+    this.studentRole = studentRole;
+    this.likes = 0;
+  }
+
+  print() {
+    console.log(`${this.studentName} (${this.studentRole})
+    ${this.likes} likes
+    
+    ${this.content}`);
+  }
+}
 
 // Prototipos con la sintaxis de clases
 
@@ -39,7 +59,7 @@ function videoPause(id) {
 
   console.log('Se pauso desde la url ' + urlSecret);
 }
-export class PlatziClass {
+class PlatziClass {
   constructor({
     name,
     videoID,
@@ -77,9 +97,13 @@ class Cours {
   constructor({
     name,
     lessons = [],
+    isFree = false,
+    lang = 'spanish'
   }) {
     this._name = name;
     this.lessons = lessons;
+    this.isFree = isFree;
+    this.lang = lang;
   }
 
   get name(){
@@ -96,13 +120,15 @@ class Cours {
 }
 
 const basicProgrammingCourse = new Cours({
-  name: 'Curso Gratis de Programación Básica'
+  name: 'Curso Gratis de Programación Básica',
+  isFree: true
 })
 const definitiveCourseHTMLandCSS = new Cours({
-  name: 'Curso Definitivo HTML y CSS'
+  name: 'Curso Definitivo HTML y CSS',
 })
 const HTMLandCSSPracticalCourse = new Cours({
-  name: 'Curso Practico HTML y CSS'
+  name: 'Curso Practico HTML y CSS',
+  lang: 'english',
 })
 
 class LearningPath {
@@ -164,18 +190,86 @@ class Student {
     this.approvedCourses = approvedCourses;
     this.learningPaths = learningPaths;
   }
+
+  printComment(commentContent) {
+    const comment = new Comment({
+      content: commentContent,
+      studentName: this.name
+    })
+    comment.print();
+  }
 }
 
-const juan2 = new Student({
+class FreeStudent extends Student {
+  constructor(props){
+    super(props);
+  }
+  approveCourse(newCourse) {
+    if (newCourse.isFree) {
+      this.approvedCourses.push(newCourse)
+    } else {
+      console.warn('Lo sentimos, ' + this.name + ', solo puedes tomar cursos abiertos');
+    }
+  }
+}
+
+class BasicStudent extends Student {
+  constructor(props){
+    super(props);
+  }
+  approveCourse(newCourse) {
+    if (newCourse.lang !== 'english') {
+      this.approvedCourses.push(newCourse)
+    } else {
+      console.warn('Lo sentimos, ' + this.name + ', no puedes tomar cursos en Ingles');
+    }
+  }
+}
+
+class ExpertStudent extends Student {
+  constructor(props){
+    super(props);
+  }
+  approveCourse(newCourse) {
+    this.approvedCourses.push(newCourse)
+  }
+}
+
+class TeacherStudent extends Student {
+  constructor(props){
+    super(props);
+  }
+  approveCourse(newCourse) {
+    this.approvedCourses.push(newCourse)
+  }
+
+  printComment(commentContent) {
+    const comment = new Comment({
+      content: commentContent,
+      studentName: this.name,
+      studentRole: 'Teacher',
+    })
+    comment.print();
+  }
+}
+
+const juan2 = new FreeStudent({
   name: 'Juan Antonio',
   email: 'juan_antonio@erestu.com',
   username: 'JuanAn',
   twitter: 'fjuandc',
 })
 
-const miguelito2 = new Student({
+const miguelito2 = new BasicStudent({
   name: 'Miguel',
   email: 'miguelitofeliz@erestu.com',
   username: 'MiguelitoFeliz',
   twitter: 'Miguelito_Feliz',
+})
+
+const freddy = new TeacherStudent({
+  name: 'Freddy Vega',
+  email: 'freddy@platzi.com',
+  username: 'FreddyGEP',
+  twitter: 'Freddy_GEP',
 })
